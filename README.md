@@ -1,4 +1,4 @@
-# SSL-CERT-CHECKER
+# SSL-CERT-EXPIRED-CHECKER
 ### A service that notifies you by email of the expiration date of your SSL domain certificate.
 
 ---
