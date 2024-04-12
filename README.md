@@ -91,5 +91,5 @@ checker:
 ---
 # How to Run?
 ```bash
-java jar ssl-checker-1.0.0.jar
+java jar ssl-cert-expired-checker-1.0.0.jar
 ```
