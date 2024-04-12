@@ -1,10 +1,10 @@
-package org.parkjw.sslcertificatechecker.domains.smtp.service;
+package org.parkjw.checker.domains.smtp.service;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.parkjw.sslcertificatechecker.config.CheckerConfig;
+import org.parkjw.checker.config.CheckerConfig;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -26,12 +26,11 @@ public class SMTPClient {
 		textBuilder.append("[");
 		textBuilder.append(domain);
 		textBuilder.append("] ");
-		textBuilder.append(config.getMail().getSubject() + " : ");
+		textBuilder.append(config.getMail().getText() + " : ");
 		textBuilder.append(date);
 		String text = textBuilder.toString();
-		log.info("text : " + text);
 
-		log.info("  >> Mail Send Start");
+
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = null;
 
@@ -41,12 +40,14 @@ public class SMTPClient {
 			helper.setTo(recipients.toArray(new String[0]));
 			helper.setSubject(text);
 			helper.setText(text, true);
+
+			log.debug("[{}] Mail Send Start. content : [{}]", domain, text);
 			mailSender.send(message);
 
 		} catch (MessagingException e) {
-			log.error("  >> Mail Send Fail. {}", e.getMessage());
+			log.debug("[{}] Mail Send Fail. error : [{}]", domain, e.getMessage());
 		}
 
-		log.info("  >> Mail Send Complete");
+		log.debug("[{}] Mail Send Complete", domain);
 	}
 }

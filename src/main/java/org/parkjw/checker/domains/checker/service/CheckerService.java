@@ -1,4 +1,4 @@
-package org.parkjw.sslcertificatechecker.domains.checker.service;
+package org.parkjw.checker.domains.checker.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,13 +53,13 @@ public class CheckerService {
 				return expirationDateTime;
 			}
 
-			// 만료일자를 가져올 수 없는 경우
-			log.warn("인증서 정보를 가져오지 못했습니다.");
+			log.warn("Failed to retrieve certificate information.");
 		} catch (IOException e) {
-			log.error("도메인 정보를 가져오지 못했습니다.", e);
+			log.error("Failed to retrieve domain information.", e);
 		} catch (Exception e) {
-			log.error("인증서 정보를 가져오지 못했습니다.", e);
+			log.error("Failed to retrieve certificate information.", e);
 		}
+
 		return null;
 	}
 }

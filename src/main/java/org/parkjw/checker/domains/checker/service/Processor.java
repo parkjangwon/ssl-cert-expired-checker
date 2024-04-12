@@ -1,10 +1,10 @@
-package org.parkjw.sslcertificatechecker.domains.checker.service;
+package org.parkjw.checker.domains.checker.service;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
-import org.parkjw.sslcertificatechecker.config.CheckerConfig;
-import org.parkjw.sslcertificatechecker.domains.checker.entity.Group;
-import org.parkjw.sslcertificatechecker.domains.smtp.service.SMTPClient;
+import org.parkjw.checker.config.CheckerConfig;
+import org.parkjw.checker.domains.checker.entity.Group;
+import org.parkjw.checker.domains.smtp.service.SMTPClient;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -29,6 +29,7 @@ public class Processor {
 		checkerConfig.getEnableGroup().forEach(group -> {
 			Map<String, Group> groups = checkerConfig.getGroups();
 			Group targetGroup = groups.get(group);
+
 			if (ObjectUtils.isNotEmpty(targetGroup)) {
 				targetGroup.getDomains().forEach(domain -> {
 					LocalDateTime expirationDateTime = service.getSSLCertificateExpirationDate(domain);
@@ -39,14 +40,14 @@ public class Processor {
 					Duration duration = Duration.between(changeTimeInstant, now);
 					long daysUntilExpiration = Math.abs(duration.toDays());
 
-					checkerConfig.getCondition().forEach(condition -> {
-						if (condition > daysUntilExpiration) {
+					targetGroup.getCondition().forEach(condition -> {
+						if (condition == daysUntilExpiration) {
 							client.sendEmail(targetGroup.getRecipients(), domain, expirationDate);
 						}
 					});
-
 				});
 			}
 		});
 	}
+
 }

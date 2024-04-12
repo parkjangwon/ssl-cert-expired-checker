@@ -1,1 +1,39 @@
-spring.application.name=ssl-certificate-checker
+spring:
+  main:
+    web-application-type: none
+  pid:
+  file: checker.pid
+checker:
+  cron: 0 0 9 * * ?
+  enablegroup:
+    - custom-group-1
+  server:
+    host: 127.0.0.1
+    port: 25
+    ssl: false
+    authentication: false
+  mail:
+    sender: noreply@domain.com
+    password: YOUR_ACCOUNT_PASSWORD
+    text: SSL Certificate ExpirationDate
+  groups:
+    custom-group-1:
+      condition:
+        - 7
+        - 1
+      recipients:
+        - user1@domain.com
+        - user2@domain.com
+      domains:
+        - mail.kakao.com
+    custom-group-2:
+      condition:
+        - 30
+        - 14
+        - 7
+        - 1
+      recipients:
+        - user1@domain2.com
+      domains:
+        - www.naver.com
+        - www.google.com

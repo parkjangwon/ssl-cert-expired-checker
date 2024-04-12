@@ -1,7 +1,7 @@
-package org.parkjw.sslcertificatechecker.domains.cron;
+package org.parkjw.checker.domains.cron;
 
 import lombok.RequiredArgsConstructor;
-import org.parkjw.sslcertificatechecker.domains.checker.service.Processor;
+import org.parkjw.checker.domains.checker.service.Processor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 

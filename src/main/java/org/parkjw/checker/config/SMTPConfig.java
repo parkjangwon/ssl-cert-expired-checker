@@ -10,7 +10,7 @@ import java.util.Properties;
 
 @Configuration
 @RequiredArgsConstructor
-public class MailConfig {
+public class SMTPConfig {
 
 	private final CheckerConfig config;
 
@@ -21,10 +21,15 @@ public class MailConfig {
 		mailSender.setHost(config.getServer().getHost());
 		mailSender.setPort(config.getServer().getPort());
 
+		if (config.getServer().isAuthentication()) {
+			mailSender.setUsername(config.getMail().getSender());
+			mailSender.setPassword(config.getMail().getPassword());
+		}
+
 		Properties props = mailSender.getJavaMailProperties();
 		props.put("mail.transport.protocol", "smtp");
 		props.put("mail.smtp.auth", config.getServer().isAuthentication());
-		props.put("mail.smtp.ssl.enable", config.getServer().isSsl());
+		props.put("mail.smtp.starttls.enable", config.getServer().isSsl());
 
 		return mailSender;
 	}

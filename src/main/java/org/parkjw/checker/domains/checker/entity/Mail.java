@@ -1,4 +1,4 @@
-package org.parkjw.sslcertificatechecker.domains.checker.entity;
+package org.parkjw.checker.domains.checker.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,5 +11,5 @@ public class Mail {
 
 	private String password;
 
-	private String subject;
+	private String text;
 }

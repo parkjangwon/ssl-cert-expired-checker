@@ -1,10 +1,10 @@
-package org.parkjw.sslcertificatechecker.config;
+package org.parkjw.checker.config;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.parkjw.sslcertificatechecker.domains.checker.entity.Group;
-import org.parkjw.sslcertificatechecker.domains.checker.entity.Mail;
-import org.parkjw.sslcertificatechecker.domains.checker.entity.Server;
+import org.parkjw.checker.domains.checker.entity.Group;
+import org.parkjw.checker.domains.checker.entity.Mail;
+import org.parkjw.checker.domains.checker.entity.Server;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -26,6 +26,4 @@ public class CheckerConfig {
 	private List<String> enableGroup;
 
 	private Map<String, Group> groups;
-
-	private List<Integer> condition;
 }

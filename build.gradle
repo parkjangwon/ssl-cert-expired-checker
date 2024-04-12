@@ -1,14 +1,21 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.2.4'
-    id 'io.spring.dependency-management' version '1.1.4'
+    id 'org.springframework.boot' version '2.7.12'
+    id 'io.spring.dependency-management' version '1.1.0'
 }
 
 group = 'org.parkjw'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0'
 
+// 새로운 설정
 java {
-    sourceCompatibility = '17'
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+bootJar {
+    archivesBaseName = 'ssl-checker'
+    archiveFileName = 'ssl-checker-1.0.0.jar'
 }
 
 configurations {
@@ -23,6 +30,11 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+    implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.21'
+    implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
+
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'

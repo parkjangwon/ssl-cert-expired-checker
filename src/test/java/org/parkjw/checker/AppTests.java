@@ -1,4 +1,4 @@
-package org.parkjw.sslcertificatechecker;
+package org.parkjw.checker;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
