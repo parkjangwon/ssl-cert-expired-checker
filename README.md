@@ -1,8 +1,8 @@
-
+# SSL-CERT-CHECKER
 ### A service that notifies you by email of the expiration date of your SSL domain certificate.
 
 ---
-# RESULT : EMAIL SYSTEM :: INBOX
+# EMAIL SYSTEM :: INBOX
 > [gmail.com] SSL Certificate ExpirationDate : 2024-05-27
 
 > [mail.naver.com] SSL Certificate ExpirationDate : 2024-05-01
