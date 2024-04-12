@@ -14,8 +14,8 @@ java {
 }
 
 bootJar {
-    archivesBaseName = 'ssl-cert-checker'
-    archiveFileName = 'ssl-cert-checker-1.0.0.jar'
+    archivesBaseName = 'ssl-cert-expired-checker'
+    archiveFileName = 'ssl-cert-expired-checker-1.0.0.jar'
 }
 
 configurations {
