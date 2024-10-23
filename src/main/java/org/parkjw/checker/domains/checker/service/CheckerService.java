@@ -40,6 +40,8 @@ public class CheckerService {
 
 			URL url = new URL("https://" + domain);
 			HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+			connection.setConnectTimeout(30000);
+			connection.setReadTimeout(30000);
 			connection.setSSLSocketFactory(sslContext.getSocketFactory());
 
 			connection.connect();
@@ -55,7 +57,7 @@ public class CheckerService {
 
 			log.warn("Failed to retrieve certificate information.");
 		} catch (IOException e) {
-			log.error("Failed to retrieve domain information.", e);
+			log.error("Failed to retrieve domain information. domain: {}", domain, e);
 		} catch (Exception e) {
 			log.error("Failed to retrieve certificate information.", e);
 		}

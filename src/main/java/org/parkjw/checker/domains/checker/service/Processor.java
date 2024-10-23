@@ -33,18 +33,20 @@ public class Processor {
 			if (ObjectUtils.isNotEmpty(targetGroup)) {
 				targetGroup.getDomains().forEach(domain -> {
 					LocalDateTime expirationDateTime = service.getSSLCertificateExpirationDate(domain);
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-					String expirationDate = expirationDateTime.format(formatter);
-					Instant now = Instant.now();
-					Instant changeTimeInstant = expirationDateTime.atZone(ZoneId.systemDefault()).toInstant();
-					Duration duration = Duration.between(changeTimeInstant, now);
-					long daysUntilExpiration = Math.abs(duration.toDays());
+					if (expirationDateTime != null) {
+						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+						String expirationDate = expirationDateTime.format(formatter);
+						Instant now = Instant.now();
+						Instant changeTimeInstant = expirationDateTime.atZone(ZoneId.systemDefault()).toInstant();
+						Duration duration = Duration.between(changeTimeInstant, now);
+						long daysUntilExpiration = Math.abs(duration.toDays());
 
-					targetGroup.getCondition().forEach(condition -> {
-						if (condition == daysUntilExpiration) {
-							client.sendEmail(targetGroup.getRecipients(), domain, expirationDate);
-						}
-					});
+						targetGroup.getCondition().forEach(condition -> {
+							if (condition == daysUntilExpiration) {
+								client.sendEmail(targetGroup.getRecipients(), domain, expirationDate);
+							}
+						});
+					}
 				});
 			}
 		});
