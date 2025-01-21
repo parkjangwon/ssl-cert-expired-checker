@@ -8,11 +8,8 @@ import org.parkjw.checker.domains.smtp.service.SMTPClient;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -25,29 +22,26 @@ public class Processor {
 	private final CheckerConfig checkerConfig;
 
 	public void process() {
-
 		checkerConfig.getEnableGroup().forEach(group -> {
-			Map<String, Group> groups = checkerConfig.getGroups();
-			Group targetGroup = groups.get(group);
+			Group targetGroup = checkerConfig.getGroups().get(group);
+			if (ObjectUtils.isEmpty(targetGroup)) {
+				return;
+			}
 
-			if (ObjectUtils.isNotEmpty(targetGroup)) {
-				targetGroup.getDomains().forEach(domain -> {
-					LocalDateTime expirationDateTime = service.getSSLCertificateExpirationDate(domain);
-					if (expirationDateTime != null) {
-						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-						String expirationDate = expirationDateTime.format(formatter);
-						Instant now = Instant.now();
-						Instant changeTimeInstant = expirationDateTime.atZone(ZoneId.systemDefault()).toInstant();
-						Duration duration = Duration.between(changeTimeInstant, now);
-						long daysUntilExpiration = Math.abs(duration.toDays());
+			for (String domain : targetGroup.getDomains()) {
+				LocalDateTime expireDate = service.getSSLCertificateExpirationDate(domain);
+				if (expireDate == null) {
+					continue;
+				}
 
-						targetGroup.getCondition().forEach(condition -> {
-							if (condition == daysUntilExpiration) {
-								client.sendEmail(targetGroup.getRecipients(), domain, expirationDate);
-							}
-						});
-					}
-				});
+				// Calculate the remaining days until the expiration date
+				Duration duration = Duration.between(LocalDateTime.now(), expireDate);
+				int day = Long.valueOf(duration.toDays()).intValue();
+
+				// Send an email if the specified date condition is met
+				if (targetGroup.getCondition().contains(day)) {
+					client.sendEmail(targetGroup.getRecipients(), domain, expireDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+				}
 			}
 		});
 	}
